@@ -2,6 +2,7 @@ package main
 
 import (
 	"log"
+	"state_manager"
 	"state_manager/examples/values"
 )
 
@@ -17,11 +18,11 @@ func main() {
 
 	// Utilize your values
 	// Generic version
-	users := state_manager.Get[[]values.User](stateManager, values.StateValuesUsersKey)
+	users, _ := state_manager.Get[[]values.User](stateManager, values.StateValuesUsersKey)
 	// Type assertion version
-	users := stateManager.Get(values.StateValuesUsersKey).([]values.User)
+	users, _ := stateManager.Get(values.StateValuesUsersKey).([]values.User)
 	// User by id
-	user := stateManager.Get(values.StateValuesUsersByIdsKey, values.UsersByIdsValueItemsRequest{ID: 1}).(values.User)
+	user, _ := stateManager.Get(values.StateValuesUsersByIdsKey, values.UsersByIdsValueItemsRequest{ID: 1}).(values.User)
 
 	// Opportunities
 	// Manually trigger the updater for each value in the storage

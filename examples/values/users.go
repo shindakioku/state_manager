@@ -1,6 +1,9 @@
 package values
 
-import "time"
+import (
+	"state_manager"
+	"time"
+)
 
 const StateValuesUsersKey = "users"
 
@@ -12,22 +15,17 @@ type UsersValue struct {
 	users []User
 }
 
-// Key Unique key
-func (u *UsersValue) Key() state_manager.ValueKey {
-	return StateValuesUsersKey
-}
-
 func (u *UsersValue) Update() error {
 	// Any updates, whether from storage (such as a database), an API, random generation, etc.
 
 	return nil
 }
 
-func (u *UsersValue) Items(request ...any) any {
-	return u.users
+func (u *UsersValue) Items(requests ...any) (any, error) {
+	return u.users, nil
 }
 
-func (u *UsersValue) UpdateTTL() time.Duration {
+func (u *UsersValue) UpdateSchedule() time.Duration {
 	return 1 * time.Hour
 }
 

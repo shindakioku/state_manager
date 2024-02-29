@@ -20,32 +20,31 @@ type UsersByIdsValue struct {
 	users sync.Map
 }
 
-// Key Unique key
-func (u *UsersByIdsValue) Key() state_manager.ValueKey {
-	return StateValuesUsersByIdsKey
-}
-
 func (u *UsersByIdsValue) Update() error {
 	// Any updates, whether from storage (such as a database), an API, random generation, etc.
 
 	return nil
 }
 
+func (u *UsersByIdsValue) UpdateSchedule() time.Duration {
+	return 0
+}
+
 func (u *UsersByIdsValue) UpdateTTL() time.Duration {
 	return 24 * time.Hour
 }
 
-func (u *UsersByIdsValue) Items(request ...any) any {
-	if len(request) == 0 {
-		return u.users
+func (u *UsersByIdsValue) Items(requests ...any) (any, error) {
+	if len(requests) == 0 {
+		return u.users, nil
 	}
 
-	req, ok := request[0].(*UsersByIdsValueItemsRequest)
+	req, ok := requests[0].(*UsersByIdsValueItemsRequest)
 	if ok {
 		user, _ := u.users.Load(req.ID)
 
-		return user
+		return user, nil
 	}
 
-	return nil
+	return nil, nil
 }
